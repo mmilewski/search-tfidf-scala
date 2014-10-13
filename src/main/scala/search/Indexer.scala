@@ -116,12 +116,12 @@ object Indexer {
   def indexDocuments(documents: Iterator[(DocumentTitle, List[Word])]): IndexedDocuments = {
     import scala.collection.mutable
 
-    val docToWordVector = new ListBuffer[WordVector]
+    val documentsSpace = new ListBuffer[WordVector]
     val docsContainingWord = new mutable.HashMap[Word, Set[DocumentTitle]]
 
     documents.foreach {
       case (title, words) =>
-        docToWordVector += WordVector(words, Some(title))
+        documentsSpace += WordVector(words, Some(title))
         words.foreach { word =>
           val currentDocsWithThisWord = docsContainingWord.getOrElse(word, Set.empty)
           docsContainingWord += word -> (currentDocsWithThisWord + title)
@@ -129,7 +129,7 @@ object Indexer {
     }
 
     new IndexedDocuments(
-      docToWordVector.toList,
+      documentsSpace.toVector,
       docsContainingWord.toMap
     )
   }
