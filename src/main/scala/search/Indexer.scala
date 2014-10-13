@@ -8,7 +8,7 @@ package search
 package object types {
   type Word = String
   type DocumentTitle = String
-  type SearchResult = DocumentTitle
+  type SearchResult = (DocumentTitle, Double)
 }
 
 import search.types.{DocumentTitle, SearchResult, Word}
@@ -106,7 +106,7 @@ class IndexedDocuments(documentsSpace: Seq[WordVector],
       .filterNot(_._2.isNaN)
       .filterNot(_._2 < 0.000001)
       .take(topN)
-      .map(_._1) // keep only title
+//      .map(_._1) // keep only title
   }
 
 }
