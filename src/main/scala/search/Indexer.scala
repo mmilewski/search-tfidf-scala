@@ -22,13 +22,13 @@ import scala.collection.mutable.ListBuffer
  */
 case class WordVector(private val sentence: Traversable[Word],
                       documentTitle: Option[DocumentTitle]) extends Traversable[(Word, Int)] {
-  private val wordCount: Map[Word, Int] = sentence.groupBy(identity).mapValues(_.size)
+  private val wordCountMap: Map[Word, Int] = sentence.groupBy(identity).mapValues(_.size)
 
-  val totalWordCount: Int = wordCount map (_._2) sum
+  val totalWordCount: Int = wordCountMap.values.sum
 
-  def countOccurrencesOf(word: Word): Int = wordCount.getOrElse(word, 0)
+  def countOccurrencesOf(word: Word): Int = wordCountMap.getOrElse(word, 0)
 
-  override def foreach[U](f: ((Word, Int)) => U): Unit = wordCount.foreach(f)
+  override def foreach[U](f: ((Word, Int)) => U): Unit = wordCountMap.foreach(f)
 }
 
 case class TfidfVector(private val data: Map[Word, Double],
